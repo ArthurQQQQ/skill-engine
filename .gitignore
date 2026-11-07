@@ -1,0 +1,13 @@
+__pycache__/
+*.py[cod]
+.DS_Store
+.env
+.env.*
+!.env.example
+.state/
+.skill-editor/
+data/*.json
+web/inventory.js
+*.log
+prototypes/skill-flow/node_modules/
+web/flow-lab/
