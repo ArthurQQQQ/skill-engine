@@ -1,0 +1,4 @@
+interface:
+  display_name: "Skill Engine"
+  short_description: "在 Codex 对话中浏览、比较和维护本地技能，按需打开画布核对依据"
+  default_prompt: "用 $skill-engine 从我的当前任务出发，帮我看懂本地技能并判断该怎么使用。"
