@@ -1,0 +1,107 @@
+/* Only browsing layout lives here. Categories do not define runtime routing. */
+.skill-atlas {
+  position: relative;
+  overflow: hidden;
+  min-height: 320px;
+  isolation: isolate;
+  padding: 0;
+  touch-action: none;
+  overscroll-behavior: none;
+  background-color: var(--bg, #090f18);
+  background-image: radial-gradient(circle, #6f9eb324 .75px, transparent .85px);
+  background-size: 28px 28px;
+  cursor: grab;
+  outline-offset: -3px;
+}
+.skill-atlas:focus-visible { outline: 1px solid #86dbe14d; }
+.skill-atlas-world {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 1px;
+  height: 1px;
+  transform-origin: 0 0;
+  will-change: transform;
+  overflow: visible;
+}
+.skill-atlas-groups { position: absolute; left: 0; top: 0; }
+.skill-atlas-category {
+  position: absolute;
+  margin: 0;
+  border: 1px solid #294052;
+  border-radius: 12px;
+  background: #0d1926ed;
+  box-shadow: 0 8px 30px #00000015;
+  overflow: hidden;
+}
+.skill-atlas-category-grip {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  width: 100%;
+  min-height: 48px;
+  padding: 12px 15px;
+  border: 0;
+  border-bottom: 1px solid #24384a;
+  background: #14233270;
+  border-radius: 0;
+  text-align: left;
+  color: var(--secondary, #bacbdc);
+  cursor: grab;
+  user-select: none;
+  touch-action: none;
+}
+.skill-atlas-category-grip:hover { background: #192e3e8a; }
+.skill-atlas-category-grip:focus-visible { outline: 2px solid var(--accent, #86dbe1); outline-offset: -3px; }
+.skill-atlas-category-label { display: flex; align-items: center; gap: 9px; font-size: 13px; line-height: 1.6; font-weight: 560; letter-spacing: .3px; white-space: nowrap; }
+.skill-atlas-category-label:before { content: ''; width: 5px; height: 5px; border: 1px solid #86dbe1a6; border-radius: 1px; transform: rotate(45deg); }
+.skill-atlas-category-count { font: 10px/1.5 var(--mono, monospace); color: var(--quiet, #7e96ad); padding-left: 2px; }
+.skill-atlas-category-caption { font-size: 10px; line-height: 1.6; color: var(--quiet, #7e96ad); white-space: nowrap; }
+.skill-atlas-category-nodes { display: grid; grid-template-columns: repeat(var(--atlas-columns, 3), minmax(0, 1fr)); gap: 7px; padding: 11px; }
+.skill-atlas-node {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 4px;
+  width: 100%;
+  min-width: 0;
+  min-height: 52px;
+  padding: 8px 10px;
+  border: 1px solid #263b4d;
+  border-radius: 7px;
+  background: #142332;
+  color: var(--secondary, #bacbdc);
+  text-align: left;
+  cursor: pointer;
+  user-select: none;
+  touch-action: none;
+  box-shadow: 0 2px 5px #00000008;
+}
+.skill-atlas-node:hover { background: #1a3040; border-color: #4a7183; }
+.skill-atlas-node:focus-visible { outline: 2px solid var(--accent, #86dbe1); outline-offset: 2px; z-index: 2; }
+.skill-atlas-node-title { display: block; width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 12.5px; font-weight: 500; line-height: 1.5; color: #c8d8e7; }
+.skill-atlas-node-name { display: block; width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font: 10px/1.6 var(--mono, monospace); letter-spacing: -.15px; color: #829bb1; }
+.skill-atlas-node.is-related { border-color: #426471; }
+.skill-atlas-node.is-selected { background: #1a3542; border-color: #75bbc5; box-shadow: inset 2px 0 0 #86dbe1, 0 0 18px #86dbe10a; }
+.skill-atlas-node.is-selected .skill-atlas-node-title { color: #acf0f2; }
+.skill-atlas-node.is-selected .skill-atlas-node-name { color: #91b5c8; }
+.skill-atlas-node.has-file-warning:after { content: ''; position: absolute; top: 6px; right: 6px; width: 4px; height: 4px; border-radius: 50%; background: var(--warning, #dfbd83); }
+.skill-atlas-category.is-dragging { z-index: 5; border-color: #598293; box-shadow: 0 18px 50px #00000033; }
+.skill-atlas.is-panning, .skill-atlas.is-panning *, .skill-atlas.is-dragging-category, .skill-atlas.is-dragging-category * { cursor: grabbing !important; }
+.skill-atlas-links { position: absolute; left: 0; top: 0; overflow: visible; pointer-events: none; opacity: .75; }
+.skill-atlas-link { fill: none; stroke: #78bcc2; stroke-width: 1; vector-effect: non-scaling-stroke; }
+.skill-atlas-link.is-uncertain { stroke: #6a8293; stroke-dasharray: 4 6; }
+.skill-atlas-empty { position: absolute; left: 50%; top: 48%; transform: translate(-50%, -50%); display: flex; flex-direction: column; gap: 9px; align-items: center; width: min(380px, calc(100% - 64px)); padding: 24px; text-align: center; color: var(--secondary, #bacbdc); pointer-events: none; }
+.skill-atlas-empty strong { font-size: 15px; line-height: 1.7; font-weight: 500; }
+.skill-atlas-empty span { font-size: 12px; line-height: 1.8; color: var(--muted, #93a8be); }
+.skill-atlas-empty[hidden] { display: none; }
+@media (prefers-reduced-motion: no-preference) {
+  .skill-atlas-node { transition: background .12s, border-color .12s, box-shadow .12s; }
+}
+@media (max-width: 700px) {
+  .skill-atlas { background-size: 24px 24px; }
+  .skill-atlas-empty { width: calc(100% - 40px); padding: 18px; }
+}

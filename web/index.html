@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="color-scheme" content="dark">
+  <meta name="theme-color" content="#090f18">
+  <title>Skill Editor · 技能画布</title>
+  <link rel="stylesheet" href="./styles.css">
+  <link rel="stylesheet" href="./theme.css">
+  <link rel="stylesheet" href="./atlas.css">
+  <link rel="stylesheet" href="./workspace.css">
+  <link rel="stylesheet" href="./cases.css">
+</head>
+<body class="atlas-workspace">
+  <header class="atlas-topbar">
+    <button id="overview-button" class="atlas-brand" aria-label="回到技能画布"><span class="brand-mark">s<span>e</span></span><span>Skill Editor<small>PERSONAL WORKSPACE</small></span></button>
+    <div class="atlas-commandbar">
+      <label class="search-box"><span aria-hidden="true">⌕</span><input id="skill-search" type="search" placeholder="搜索技能" autocomplete="off" aria-label="搜索技能"><kbd>/</kbd></label>
+      <details class="atlas-source-menu"><summary><span id="source-label">我的技能</span><span aria-hidden="true">⌄</span></summary><div id="source-filters" role="group" aria-label="选择技能来源"><button data-source="personal" class="active" aria-pressed="true">个人技能</button><button data-source="all" aria-pressed="false">全部目录</button><button data-source="plugin" aria-pressed="false">插件技能</button><button data-source="system" aria-pressed="false">系统技能</button></div></details>
+      <span id="connection-status" class="status-pill"><i></i>连接中</span>
+      <button id="refresh-button" class="atlas-icon-button" aria-label="重新扫描技能文件" title="重新扫描技能文件">↻</button>
+      <button id="open-maintenance" class="atlas-maintenance-button" aria-controls="maintenance-drawer" aria-expanded="false">维护<span aria-hidden="true">↗</span></button>
+    </div>
+  </header>
+  <main class="canvas-shell">
+    <div class="canvas-intro"><p class="eyebrow">YOUR SKILL ATLAS</p><h1 id="overview-title">我的技能<span class="canvas-count" id="atlas-summary">正在读取…</span></h1></div>
+    <div id="skill-atlas" tabindex="0" role="region" aria-label="技能画布，可拖动平移和缩放"><div id="atlas-world"></div></div>
+    <div class="canvas-bottom-bar"><span class="canvas-hint">拖动画布 · 滚轮缩放 · 拖动分区标题整理位置</span><div class="canvas-controls" role="group" aria-label="画布视图"><button id="atlas-reset" title="恢复分区布局" aria-label="恢复分区布局">↺</button><span class="control-divider"></span><button id="atlas-zoom-out" aria-label="缩小画布">−</button><span id="atlas-zoom-value">100%</span><button id="atlas-zoom-in" aria-label="放大画布">＋</button><span class="control-divider"></span><button id="atlas-fit" title="适配全部技能" aria-label="适配全部技能">⌗</button></div></div>
+    <p class="canvas-scope-note">按用途分组 · 分类仅用于浏览</p>
+  </main>
+  <aside id="skill-drawer" class="inspector workspace-drawer" aria-labelledby="inspector-title" hidden>
+    <div class="inspector-heading"><span class="section-kicker">SKILL DETAILS</span><div class="drawer-heading-actions"><span id="editable-badge" class="subtle-tag">—</span><button id="close-inspector" class="atlas-icon-button" aria-label="关闭技能详情">×</button></div></div>
+    <div class="selected-skill"><div id="skill-monogram" class="skill-monogram">S</div><div><h2 id="inspector-title">选择一个技能</h2><p id="selected-source"></p></div></div>
+    <div class="inspector-tabs" role="tablist" aria-label="技能详情"><button id="tab-overview" role="tab" aria-selected="true" aria-controls="tab-content" data-tab="overview" class="active">简介</button><button id="tab-trigger" role="tab" aria-selected="false" aria-controls="tab-content" data-tab="trigger" tabindex="-1">触发</button><button id="tab-workflow" role="tab" aria-selected="false" aria-controls="tab-content" data-tab="workflow" tabindex="-1">正文</button><button id="tab-intent" role="tab" aria-selected="false" aria-controls="tab-content" data-tab="intent" tabindex="-1">意图</button><button id="tab-preview" role="tab" aria-selected="false" aria-controls="tab-content" data-tab="preview" tabindex="-1">差异</button></div>
+    <div id="tab-content" class="tab-content" role="tabpanel" aria-labelledby="tab-overview"></div>
+    <details class="drawer-related"><summary>相关技能<span id="relation-count"></span></summary><div id="relationship-map" class="relationship-map"></div></details>
+    <div class="inspector-bottom"><span class="tiny-dot"></span><p id="inspector-bottom-note">只有预览后点击“应用修改”才会写入文件。</p></div>
+  </aside>
+  <aside id="maintenance-drawer" class="maintenance-drawer workspace-drawer" aria-labelledby="maintenance-title" hidden>
+    <div class="maintenance-heading"><div><p class="section-kicker">WORKSPACE TOOLS</p><h2 id="maintenance-title">技能维护</h2></div><button id="close-maintenance" class="atlas-icon-button" aria-label="关闭技能维护">×</button></div>
+    <nav class="maintenance-tabs" aria-label="维护工具"><button data-maintenance="cases" class="active" aria-pressed="true">任务试验台</button><button data-maintenance="inventory" aria-pressed="false">目录</button><button data-maintenance="findings" aria-pressed="false">边界检查</button><button data-maintenance="comparison" aria-pressed="false">比较</button></nav>
+    <div class="maintenance-body">
+      <section data-maintenance-view="cases"><div id="case-workspace"></div></section>
+      <section data-maintenance-view="inventory" hidden>
+        <div id="mode-note" class="mode-note" hidden></div>
+        <div id="inventory-update" class="inventory-update" aria-label="磁盘盘点与变化" aria-live="polite"></div>
+        <div class="stats-grid"><article class="stat-card"><span class="stat-label">会话快照</span><strong id="stat-available">—</strong><span class="stat-caption">历史目录口径</span></article><article class="stat-card"><span class="stat-label">磁盘个人技能</span><strong id="stat-personal">—</strong><span class="stat-caption">存在与可用分别记录</span></article><article class="stat-card"><span class="stat-label">维护提示</span><strong id="stat-findings">—</strong><span id="stat-findings-caption" class="stat-caption"></span></article></div>
+        <details class="directory-details"><summary>当前视图目录<span id="catalog-count"></span></summary><div id="skill-list" class="skill-list"></div></details>
+        <p id="snapshot-time" class="maintenance-footnote"></p><p id="inventory-scope" class="maintenance-footnote"></p>
+      </section>
+      <section data-maintenance-view="findings" hidden><p class="maintenance-description">先看原文依据，再判断是否需要调整。</p><div id="findings-method" class="subtle-tag"></div><div id="findings-list" class="findings-list"></div></section>
+      <section data-maintenance-view="comparison" hidden>
+        <div class="comparison-heading"><h3>比较所选技能</h3><span id="comparison-count" class="subtle-tag">0 / 6</span></div><div class="comparison-toolbar"><button id="compare-selected" class="secondary-button">加入当前技能</button><button id="clear-comparison" class="secondary-button">清空</button><button id="analyze-comparison" class="primary-button">AI 分析比较集</button></div><p class="comparison-help">最多六项。AI 会读取所选技能和意图说明，修改建议先进入草稿。</p><div id="comparison-list" class="comparison-list"></div>
+      </section>
+      <section id="ai-results" class="panel ai-results" aria-labelledby="ai-title" hidden><div class="panel-heading"><div><span class="section-kicker">AI / OPENROUTER</span><h2 id="ai-title">分析与建议</h2></div><button id="close-ai" class="icon-button" aria-label="关闭 AI 分析">×</button></div><div id="ai-result-body"></div></section>
+    </div>
+    <button id="analyze-button" class="maintenance-ai-button">AI 检查当前技能</button>
+  </aside>
+  <div id="toast" class="toast" role="status" aria-live="polite" hidden></div>
+  <script src="./atlas.js"></script>
+  <script src="./cases.js"></script>
+  <script src="./app.js"></script>
+</body>
+</html>
