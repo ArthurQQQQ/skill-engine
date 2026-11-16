@@ -1,28 +1,30 @@
-# Skill Editor · Skill Engine
+[English](README.md) · [简体中文](README.zh-CN.md)
 
-在本机找技能、为任务选技能，并把选定版本交付到指定 Agent。这个版本将 Agent 适配设为首页，保留技能库、任务和高级维护。
+![Skill Editor — Find, compare, and maintain agent skills](assets/skill-editor-cover.png)
 
-[下载这一版完整源码 ZIP](skill-editor-agent-workbench-2026-11-09.zip)。解压后的 README 包含启动步骤。
+Skill Editor is a local workspace for choosing, comparing, and maintaining Agent Skills. Browse your library, inspect what overlaps, and prepare a specific version for the Agent you use.
 
-## 这版解决什么
+[Download the current source ZIP](skill-editor-agent-workbench-2026-11-09.zip)
 
-| 痛点 | 本版实现 |
+## What you can do today
+
+| Need | What Skill Editor does |
 | --- | --- |
-| 技能装在哪、哪个 Agent 看得见，容易混在一起 | Agent 首页检查 Codex、Claude Code、Cursor、OpenCode 的程序、配置和目录证据。分别显示文件状态和宿主调用状态。 |
-| 同一技能换 Agent 要反复找目录和复制文件 | 选定目标后，从我的技能、精选目录或公开来源进入同一预览。逐一核对版本、完整文件、依赖提示和目标目录，再采用。 |
-| 更新覆盖本地修改，出问题难恢复 | 安装和更新绑定预览版本，检测来源与目标是否已变。按目标保留版本和备份，可从历史恢复。 |
-| 库大了难以找到适合当前任务的技能 | 搜索本地库和公开来源，按任务给出一套候选组合和缺口。高级维护保留原文、证据、案例和可审阅的最小改动。 |
+| Find a skill | Browse your local library and the curated catalog, or search public sources. Start from a task to see suggested skills and gaps. |
+| Understand overlap | Compare instructions and inspect cited evidence for scope overlap, delegation, complementary roles, or conditional conflicts. Automated checks flag signals such as matching names and descriptions. |
+| Add or update a skill | Check directory evidence for Codex, Claude Code, Cursor, and OpenCode. Preview an exact version and its destination, then use version backups to recover a previous managed installation. |
 
-## 这版效果
+The relationship view includes reviewed evidence and static checks. Choosing which skill to keep still requires review. A scan can show additions and changes since a previous scan. The original install date of existing skills may be unknown, while installs managed by the app record timestamps internally.
 
-- **258 项后端检查、33 项前端检查通过**。生产构建成功，保留了依赖和大分块的非致命提示。
-- 实际检查了桌面与手机上的 Agent 选择、本地查找、来源预览、预检和键盘入口。布局覆盖 1024、768、390 和 320px。
-- 隔离夹具中完整走通 **采用 A → 更新 B → 恢复 A**。目标恢复为 A，原始来源仍为 B。真实个人库的 106 份在场技能文件最终校验一致。
-- 已验证的是目录适配、文件交付和恢复。四个宿主的真实调用、任务完成率、模型兼容性、自动冲突消解和跨设备同步仍待验证或开发。
+## What we verified
 
-## 本机运行
+The November 9, 2026 release passed 258 backend and 33 frontend checks. Desktop and mobile checks covered Agent selection, local search, previews, and preflight. An isolated run installed version A, updated to B, and restored A.
 
-macOS 上已验证。需要 Python 3.9+、Node.js 22.12+ 和 npm。
+That establishes the file delivery workflow. Real Agent activation, task quality gains, and model compatibility still need task-level evidence. Community ratings and discussions are proposed features.
+
+## Run locally
+
+Use Python 3.9+, Node.js 22.12+, and npm. Download and unzip the current source package above. The expanded repository directories on `main` are an earlier snapshot.
 
 ```sh
 cd prototypes/skill-flow
@@ -32,8 +34,4 @@ cd ../..
 python3 -m skill_editor.server --port 8766
 ```
 
-打开 [Agent 工作台](http://127.0.0.1:8766/)。首次使用可到 [高级维护](http://127.0.0.1:8766/maintenance/) 点击「重新扫描技能文件」，随后在「我的技能」重读。详细步骤见 [安装和导入](docs/INSTALL-AND-IMPORT.md)。
-
-浏览、目录检查和本地索引无需模型。可选分析使用进程配置的 OpenRouter。真实 CLI 执行默认关闭，需另外配置并显式启用。
-
-源码快照带通用测试和公开精选元数据。个人技能、扫描索引、任务历史和备份留在本机。
+Open [the workspace](http://127.0.0.1:8766/). To create your local index, open [Maintenance](http://127.0.0.1:8766/maintenance/) and choose the rescan action. In Maintenance, open **Relationships** or select two skills to compare their evidence. Your library and task history are stored locally.
